@@ -1,0 +1,13 @@
+{
+  "name": "static-bsky-feed",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env main.ts"
+  },
+  "devDependencies": {
+    "@atproto/api": "0.16.9",
+    "@types/node": "24.5.2",
+    "typescript": "5.9.2"
+  }
+}
