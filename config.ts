@@ -25,10 +25,8 @@ export const config = {
   // since this only happens after querying.
   textDenyList: ["#ai", "#aiart", "#tv", "#tvseries", "#tvshow", "#abc"],
 
-  // Where to save the skeleton feed json that Bluesky consumes.
-  // Default value of public/xrpc/app.bsky.feed.getFeedSkeleton because that's
-  // the path BLuesky reads. It doesn't really expect a static json, which is why this file name is weird.
-  outputPath: "public/xrpc/app.bsky.feed.getFeedSkeleton",
+  // Path of folder to place the static site files.
+  outputFolder: "output",
 };
 
 const identifier = process.env.BLUESKY_IDENTIFIER;

@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+import { cpSync, mkdir, mkdirSync, writeFileSync, rmdirSync } from "fs";
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { bskyEnv, config } from "./config.ts";
@@ -32,18 +32,21 @@ const sortedPosts = [...posts.values()].sort(
     new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime()
 );
 
+rmdirSync(config.outputFolder, { recursive: true });
+
+const xrpcPath = `${config.outputFolder}/xrpc`;
+mkdirSync(xrpcPath, { recursive: true });
+
 writeFileSync(
-  "public/xrpc/app.bsky.feed.getFeedSkeleton",
-  JSON.stringify(
-    {
-      feed: sortedPosts.map((post) => ({ post: post.uri })),
-    },
-    null,
-    2
-  )
+  `${xrpcPath}/app.bsky.feed.getFeedSkeleton`,
+  JSON.stringify({
+    feed: sortedPosts.map((post) => ({ post: post.uri })),
+  })
 );
 
-console.log(`Saved ${sortedPosts.length} posts to ${config.outputPath}`);
+cpSync("public", config.outputFolder, { recursive: true, force: true });
+
+console.log(`Saved ${sortedPosts.length} posts to ${config.outputFolder}`);
 
 async function searchPosts(query: string) {
   console.log(`Searching for: ${query}`);
@@ -76,7 +79,7 @@ async function searchPosts(query: string) {
     }
   }
 
-  console.log(`  Found ${count} posts for "${query}"`);
+  console.log(`- Found ${count} posts for "${query}"`);
 }
 
 function isValidPost(post: PostView) {
