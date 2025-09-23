@@ -1,11 +1,4 @@
-import {
-  cpSync,
-  mkdir,
-  mkdirSync,
-  writeFileSync,
-  rmdirSync,
-  existsSync,
-} from "fs";
+import { cpSync, mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { bskyEnv, config } from "./config.ts";
@@ -40,7 +33,7 @@ const sortedPosts = [...posts.values()].sort(
 );
 
 if (existsSync(config.outputFolder)) {
-  rmdirSync(config.outputFolder, { recursive: true });
+  rmSync(config.outputFolder, { recursive: true });
 }
 
 const feedSkeletonFolder = `${config.outputFolder}/xrpc/app.bsky.feed.getFeedSkeleton`;
