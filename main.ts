@@ -43,11 +43,11 @@ if (existsSync(config.outputFolder)) {
   rmdirSync(config.outputFolder, { recursive: true });
 }
 
-const xrpcPath = `${config.outputFolder}/xrpc`;
-mkdirSync(xrpcPath, { recursive: true });
+const feedSkeletonFolder = `${config.outputFolder}/xrpc/app.bsky.feed.getFeedSkeleton`;
+mkdirSync(feedSkeletonFolder, { recursive: true });
 
 writeFileSync(
-  `${xrpcPath}/app.bsky.feed.getFeedSkeleton`,
+  `${feedSkeletonFolder}/index.json`,
   JSON.stringify({
     feed: sortedPosts.map((post) => ({ post: post.uri })),
   })
