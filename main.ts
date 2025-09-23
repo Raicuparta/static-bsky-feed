@@ -1,4 +1,11 @@
-import { cpSync, mkdir, mkdirSync, writeFileSync, rmdirSync } from "fs";
+import {
+  cpSync,
+  mkdir,
+  mkdirSync,
+  writeFileSync,
+  rmdirSync,
+  existsSync,
+} from "fs";
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { bskyEnv, config } from "./config.ts";
@@ -32,7 +39,9 @@ const sortedPosts = [...posts.values()].sort(
     new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime()
 );
 
-rmdirSync(config.outputFolder, { recursive: true });
+if (existsSync(config.outputFolder)) {
+  rmdirSync(config.outputFolder, { recursive: true });
+}
 
 const xrpcPath = `${config.outputFolder}/xrpc`;
 mkdirSync(xrpcPath, { recursive: true });
