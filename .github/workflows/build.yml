@@ -37,8 +37,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          BSKY_USERNAME: ${{ secrets.BSKY_USERNAME }}
-          BSKY_PASSWORD: ${{ secrets.BSKY_PASSWORD }}
+          BLUESKY_IDENTIFIER: ${{ secrets.BSKY_USERNAME }}
+          BLUESKY_PASSWORD: ${{ secrets.BSKY_PASSWORD }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
