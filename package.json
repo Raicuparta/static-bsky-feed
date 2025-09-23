@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node --env-file-if-exists=.env main.ts"
+    "build": "node --env-file-if-exists=.env main.ts"
   },
   "devDependencies": {
     "@atproto/api": "0.16.9",
