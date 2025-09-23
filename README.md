@@ -1,3 +1,3 @@
 # Static Bluesky Feed
 
-is a feed and static
+A Bluesky feed that's hosted statically and upadted periodically.
