@@ -28,7 +28,7 @@ await Promise.all(
             return;
           }
 
-          if (!config.filterPosts(post)) {
+          if (!config.filterPosts(post, query)) {
             return;
           }
 

@@ -41,8 +41,10 @@ type Config = {
 
   /** Filter posts after querying (return true to keep, false to discard).
    * This happens after posts have been fetched from the API using searchQueries.
-   * You can use whatever criteria you want here. Check the type definitions for PostView for data you can use. */
-  filterPosts: (post: PostView) => boolean;
+   * You can use whatever criteria you want here. Check the type definitions for PostView for data you can use.
+   * The query string passed here is one of the query strings you defined in searchQueries above,
+   * so you can change your filters based on the current query.*/
+  filterPosts: (post: PostView, query: string) => boolean;
 };
 
 export const config: Config = {
@@ -54,13 +56,13 @@ export const config: Config = {
 
   description: "Posts related to modding games.",
 
-  searchQueries: ["#modding"],
+  searchQueries: ["#modding", "#gamemodding"],
 
   postsPerQuery: 500,
 
   outputFolder: "output",
 
-  filterPosts: (post: PostView) => {
+  filterPosts: (post: PostView, _query: string) => {
     if (!post.embed) {
       return false;
     }
