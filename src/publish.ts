@@ -1,17 +1,11 @@
-import { AtpAgent, BlobRef, AppBskyFeedDefs } from "@atproto/api";
+import { BlobRef, AppBskyFeedDefs } from "@atproto/api";
 import fs from "fs/promises";
 import { config } from "./config.ts";
-import { bskyEnv } from "./env.ts";
 import { ids } from "@atproto/api/dist/client/lexicons.js";
+import { getAtpAgent } from "./atp.ts";
 
 const run = async () => {
-  const agent = new AtpAgent({
-    service: config.atpService ? config.atpService : "https://bsky.social",
-  });
-  await agent.login({
-    identifier: bskyEnv.identifier,
-    password: bskyEnv.password,
-  });
+  const agent = await getAtpAgent();
 
   let avatarRef: BlobRef | undefined;
   if (config.avatarPath) {

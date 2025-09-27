@@ -1,16 +1,9 @@
-import { AtpAgent } from "@atproto/api";
 import { config } from "./config.ts";
-import { bskyEnv } from "./env.ts";
 import { ids } from "@atproto/api/dist/client/lexicons.js";
+import { getAtpAgent } from "./atp.ts";
 
 const run = async () => {
-  const agent = new AtpAgent({
-    service: config.atpService ? config.atpService : "https://bsky.social",
-  });
-  await agent.login({
-    identifier: bskyEnv.identifier,
-    password: bskyEnv.password,
-  });
+  const agent = await getAtpAgent();
 
   const repo = agent.session?.did;
 

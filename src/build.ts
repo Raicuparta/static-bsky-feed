@@ -1,24 +1,10 @@
 import { mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
-import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { config } from "./config.ts";
-import { bskyEnv } from "./env.ts";
+import { getAtpAgent } from "./atp.ts";
 
 console.log("Authenticating...");
-const agent = new AtpAgent({
-  service: "https://bsky.social",
-});
-
-const authResponse = await agent.login({
-  identifier: bskyEnv.identifier,
-  password: bskyEnv.password,
-});
-
-if (!authResponse.success) {
-  throw new Error(`Failed to authenticate for some reason.`);
-}
-
-console.log(`Authenticated as ${authResponse.data.handle}`);
+const agent = await getAtpAgent();
 
 const posts = new Map<string, PostView>();
 
