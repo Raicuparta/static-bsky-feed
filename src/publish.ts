@@ -38,7 +38,7 @@ const run = async () => {
     collection: ids.AppBskyFeedGenerator,
     rkey: config.recordName,
     record: {
-      did: config.feedGenDid,
+      did: `did:web:${config.hostName}`,
       displayName: config.displayName,
       description: config.description,
       avatar: avatarRef,
