@@ -8,9 +8,45 @@ const agent = await getAtpAgent();
 
 const posts = new Map<string, PostView>();
 
-for (const query of config.searchQueries) {
-  await searchPosts(query);
-}
+await Promise.all(
+  config.searchQueries.map(async (query) => {
+    console.log(`Searching for: ${query}`);
+
+    let cursor: string | undefined;
+    let count = 0;
+
+    while (count < config.postsPerQuery) {
+      try {
+        const response = await agent.app.bsky.feed.searchPosts({
+          q: query,
+          limit: 100,
+          cursor,
+        });
+
+        response.data.posts.forEach((post) => {
+          if (posts.has(post.uri)) {
+            return;
+          }
+
+          if (!config.filterPosts(post)) {
+            return;
+          }
+
+          posts.set(post.uri, post);
+          count++;
+        });
+
+        if (!response.data.cursor || response.data.posts.length === 0) break;
+        cursor = response.data.cursor;
+      } catch (error) {
+        console.error(`Error searching for "${query}":`, error);
+        break;
+      }
+    }
+
+    console.log(`- Found ${count} posts for "${query}"`);
+  })
+);
 
 console.log(`Found ${posts.size} total posts`);
 
@@ -53,41 +89,3 @@ const didFolder = `${config.outputFolder}/.well-known`;
 mkdirSync(didFolder, { recursive: true });
 
 writeFileSync(`${didFolder}/did.json`, JSON.stringify(did));
-
-async function searchPosts(query: string) {
-  console.log(`Searching for: ${query}`);
-
-  let cursor: string | undefined;
-  let count = 0;
-
-  while (count < config.postsPerQuery) {
-    try {
-      const response = await agent.app.bsky.feed.searchPosts({
-        q: query,
-        limit: 100,
-        cursor,
-      });
-
-      response.data.posts.forEach((post) => {
-        if (posts.has(post.uri)) {
-          return;
-        }
-
-        if (!config.filterPosts(post)) {
-          return;
-        }
-
-        posts.set(post.uri, post);
-        count++;
-      });
-
-      if (!response.data.cursor || response.data.posts.length === 0) break;
-      cursor = response.data.cursor;
-    } catch (error) {
-      console.error(`Error searching for "${query}":`, error);
-      break;
-    }
-  }
-
-  console.log(`- Found ${count} posts for "${query}"`);
-}
