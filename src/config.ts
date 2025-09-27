@@ -1,4 +1,4 @@
-import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
+import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs.js";
 
 type Config = {
   /** Domain or subdomain where everything will be hosted. Can't be a path within a domain/subdomain,

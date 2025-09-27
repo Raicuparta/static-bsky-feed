@@ -2,6 +2,34 @@
 
 A Bluesky feed that's hosted statically and updated periodically.
 
+## Making your own feed
+
+You should be able to set everything up directly on the GitHub website, but if you want you can also clone the repo locally, make changes, run tests, etc.
+
+1. Fork this repo.
+2. Edit [src/config.ts](src/config.ts) (the comments there should explain what each thing means).
+3. Go to repo Settings -> Secrets and variables -> Actions.
+4. Create repository secrets:
+   1. `BLUESKY_IDENTIFIER` - your Bluesky handle (without the `@`).
+   2. `BLUESKY_PASSWORD` - a Bluesky [app password](https://bsky.app/settings/app-passwords).
+5. If you need local development, check [.env.template](.env.template) and use the same secrets.
+6. Go to your repo's Actions tab and enable the workflows. The "Build and Deploy" workflow will make the feed update itself periodically.
+
+## Publishing your feed
+
+1. Go to your repo's Actions tab.
+2. Select the "Publish Feed" workflow.
+3. Click the "Run workflow" dropdown.
+4. Type the confirmation, and press the "Run workflow" button.
+
+You can also do this on your local environment by running `npm run publish`.
+
+## Removing your feed from the public
+
+Same as publishing, but use the "Unpublish Feed" workflow instead.
+
+You can also do this on your local environment by running `npm run unpublish`.
+
 ## Why?
 
 Bluesky doesn't make this super clear, but all you need for a custom feed are two json files:
