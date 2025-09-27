@@ -54,12 +54,7 @@ export const config: Config = {
 
   description: "Posts related to modding games.",
 
-  searchQueries: [
-    "unity modding",
-    "unreal modding",
-    "godot modding",
-    "game modding",
-  ],
+  searchQueries: ["#modding"],
 
   postsPerQuery: 500,
 
@@ -87,7 +82,7 @@ export const config: Config = {
       return false;
     }
 
-    const deniedKeywords = ["#ai", "#aiart", "UGC"];
+    const deniedKeywords = ["#ai", "#aiart", "UGC", "#electronics", "modchip"];
 
     const lowerText = text.toLowerCase();
     if (
@@ -95,6 +90,11 @@ export const config: Config = {
         new RegExp(`\\b${deniedText.toLowerCase()}\\b`, "i").test(lowerText)
       )
     ) {
+      return false;
+    }
+
+    const tagCount = (text.match(/#/g) || []).length;
+    if (tagCount > 6) {
       return false;
     }
 
