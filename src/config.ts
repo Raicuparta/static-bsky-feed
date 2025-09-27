@@ -1,6 +1,6 @@
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs.js";
 
-type Config = {
+type Config<TQueries extends readonly string[] = readonly string[]> = {
   /** Domain or subdomain where everything will be hosted. Can't be a path within a domain/subdomain,
    * because did.json must be at the root of a domain/subdomain. */
   hostName: string;
@@ -28,7 +28,7 @@ type Config = {
    * The API doesn't support OR, AND, etc, and max 100 results per query, so each item in this list means more requests.
    * From what I can tell, if you want both "word" and "#word", just include "word" in the list.
    * Avoid redundancy, since that means more queries. */
-  searchQueries: string[];
+  searchQueries: TQueries;
 
   /** The target number of posts we want per query defined in searchQueries.
    * This takes into account the posts that get filtered out by other criteria in this config.
@@ -36,18 +36,21 @@ type Config = {
    * until we reach this number, or we run out of posts. */
   postsPerQuery: number;
 
-  /** Path of folder to place the static site files. */
-  outputFolder: string;
-
   /** Filter posts after querying (return true to keep, false to discard).
    * This happens after posts have been fetched from the API using searchQueries.
    * You can use whatever criteria you want here. Check the type definitions for PostView for data you can use.
    * The query string passed here is one of the query strings you defined in searchQueries above,
    * so you can change your filters based on the current query.*/
-  filterPosts: (post: PostView, query: string) => boolean;
+  filterPosts: (post: PostView, query: TQueries[number]) => boolean;
 };
 
-export const config: Config = {
+function createConfig<const TQueries extends readonly string[]>(
+  config: Config<TQueries>
+): Config<TQueries> {
+  return config;
+}
+
+export const config = createConfig({
   hostName: "bsky.raicuparta.com",
 
   recordName: "modding",
@@ -60,9 +63,7 @@ export const config: Config = {
 
   postsPerQuery: 500,
 
-  outputFolder: "output",
-
-  filterPosts: (post: PostView, _query: string) => {
+  filterPosts: (post: PostView, _query) => {
     if (!post.embed) {
       return false;
     }
@@ -102,4 +103,4 @@ export const config: Config = {
 
     return true;
   },
-};
+});

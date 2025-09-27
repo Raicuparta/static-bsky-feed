@@ -55,11 +55,13 @@ const sortedPosts = [...posts.values()].sort(
     new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime()
 );
 
-if (existsSync(config.outputFolder)) {
-  rmSync(config.outputFolder, { recursive: true });
+const outputFolder = "output";
+
+if (existsSync(outputFolder)) {
+  rmSync(outputFolder, { recursive: true });
 }
 
-const feedSkeletonFolder = `${config.outputFolder}/xrpc/app.bsky.feed.getFeedSkeleton`;
+const feedSkeletonFolder = `${outputFolder}/xrpc/app.bsky.feed.getFeedSkeleton`;
 mkdirSync(feedSkeletonFolder, { recursive: true });
 
 writeFileSync(
@@ -69,7 +71,7 @@ writeFileSync(
   })
 );
 
-console.log(`Saved ${sortedPosts.length} posts to ${config.outputFolder}`);
+console.log(`Saved ${sortedPosts.length} posts to ${outputFolder}`);
 
 console.log("Creating did.json...");
 
@@ -85,7 +87,9 @@ const did = {
   ],
 };
 
-const didFolder = `${config.outputFolder}/.well-known`;
+const didFolder = `${outputFolder}/.well-known`;
 mkdirSync(didFolder, { recursive: true });
 
 writeFileSync(`${didFolder}/did.json`, JSON.stringify(did));
+
+console.log("All done 🐼");
