@@ -48,13 +48,18 @@ type Config = {
 export const config: Config = {
   hostName: "bsky.raicuparta.com",
 
-  recordName: "rai",
+  recordName: "modding",
 
-  displayName: "Raicuparta's Feed",
+  displayName: "Game Modding",
 
-  description: "This is just Rai testing some things out",
+  description: "Posts related to modding games.",
 
-  searchQueries: ["#procedural", "procgen"],
+  searchQueries: [
+    "unity modding",
+    "unreal modding",
+    "godot modding",
+    "game modding",
+  ],
 
   postsPerQuery: 500,
 
@@ -82,14 +87,7 @@ export const config: Config = {
       return false;
     }
 
-    const deniedKeywords = [
-      "#ai",
-      "#aiart",
-      "#tv",
-      "#tvseries",
-      "#tvshow",
-      "#abc",
-    ];
+    const deniedKeywords = ["#ai", "#aiart", "UGC"];
 
     const lowerText = text.toLowerCase();
     if (
