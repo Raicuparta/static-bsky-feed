@@ -59,6 +59,8 @@ export const config = createConfig({
 
   description: "Posts related to modding games.",
 
+  avatarPath: "assets/avatar.png",
+
   searchQueries: ["#modding", "#gamemodding"],
 
   postsPerQuery: 500,
