@@ -1,6 +1,28 @@
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 
-export const config = {
+type Config = {
+  feedGenDid: string;
+  recordName: string;
+  displayName: string;
+  description?: string;
+  avatarPath?: string;
+  atpService?: string;
+  videoOnly?: boolean;
+  searchQueries: string[];
+  postsPerQuery: number;
+  outputFolder: string;
+  filterPosts: (post: PostView) => boolean;
+};
+
+export const config: Config = {
+  feedGenDid: "did:web:bsky.raicuparta.com",
+
+  recordName: "rai",
+
+  displayName: "Raicuparta's Feed",
+
+  description: "This is just Rai testing some things out",
+
   // Each string in this list results in a separate batch of queries sent to the Bluesky API.
   // The API doesn't support OR, AND, etc, and max 100 results per query, so each item in this list means more requests.
   // From what I can tell, if you want both "word" and "#word", just include "word" in the list.

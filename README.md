@@ -2,7 +2,7 @@
 
 A Bluesky feed that's hosted statically and updated periodically.
 
-TODO: script for publishing the feed.
+TODO: script for unpublishing the feed.
 
 ## Why?
 

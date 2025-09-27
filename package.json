@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "node --env-file-if-exists=.env src/main.ts"
+    "build": "node --env-file-if-exists=.env src/build.ts",
+    "publish": "node --env-file-if-exists=.env src/publish.ts"
   },
   "devDependencies": {
     "@atproto/api": "0.16.11",
