@@ -1,7 +1,8 @@
 import { cpSync, mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
-import { bskyEnv, config } from "./config.ts";
+import { config } from "./config.ts";
+import { bskyEnv } from "./env.ts";
 
 console.log("Authenticating...");
 const agent = new AtpAgent({
@@ -65,7 +66,11 @@ async function searchPosts(query: string) {
       });
 
       response.data.posts.forEach((post) => {
-        if (!isValidPost(post)) {
+        if (posts.has(post.uri)) {
+          return;
+        }
+
+        if (!config.filterPosts(post)) {
           return;
         }
 
@@ -82,33 +87,4 @@ async function searchPosts(query: string) {
   }
 
   console.log(`- Found ${count} posts for "${query}"`);
-}
-
-function isValidPost(post: PostView) {
-  if (posts.has(post.uri)) {
-    return false;
-  }
-
-  if (!post.embed) {
-    return false;
-  }
-
-  if (!config.embedTypeAllowList.includes(post.embed.$type)) {
-    return false;
-  }
-
-  const text = post.record.text;
-  if (typeof text !== "string") {
-    return false;
-  }
-
-  if (
-    config.textDenyList.some((deniedText) =>
-      text.toLowerCase().includes(deniedText)
-    )
-  ) {
-    return false;
-  }
-
-  return true;
 }

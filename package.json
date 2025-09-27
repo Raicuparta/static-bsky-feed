@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "node --env-file-if-exists=.env main.ts"
+    "build": "node --env-file-if-exists=.env src/main.ts"
   },
   "devDependencies": {
-    "@atproto/api": "0.16.9",
+    "@atproto/api": "0.16.11",
     "@types/node": "24.5.2",
     "typescript": "5.9.2"
   }
