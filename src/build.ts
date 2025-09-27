@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
+import { mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { config } from "./config.ts";
@@ -47,9 +47,26 @@ writeFileSync(
   })
 );
 
-cpSync("public", config.outputFolder, { recursive: true, force: true });
-
 console.log(`Saved ${sortedPosts.length} posts to ${config.outputFolder}`);
+
+console.log("Creating did.json...");
+
+const did = {
+  "@context": ["https://www.w3.org/ns/did/v1"],
+  id: `did:web:${config.hostName}`,
+  service: [
+    {
+      id: "#bsky_fg",
+      type: "BskyFeedGenerator",
+      serviceEndpoint: `https://${config.hostName}`,
+    },
+  ],
+};
+
+const didFolder = `${config.outputFolder}/.well-known`;
+mkdirSync(didFolder, { recursive: true });
+
+writeFileSync(`${didFolder}/did.json`, JSON.stringify(did));
 
 async function searchPosts(query: string) {
   console.log(`Searching for: ${query}`);
