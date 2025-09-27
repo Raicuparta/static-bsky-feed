@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "node --env-file-if-exists=.env src/build.ts",
-    "publish": "node --env-file-if-exists=.env src/publish.ts"
+    "publish": "node --env-file-if-exists=.env src/publish.ts",
+    "unpublish": "node --env-file-if-exists=.env src/unpublish.ts"
   },
   "devDependencies": {
     "@atproto/api": "0.16.11",

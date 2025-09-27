@@ -2,8 +2,6 @@
 
 A Bluesky feed that's hosted statically and updated periodically.
 
-TODO: script for unpublishing the feed.
-
 ## Why?
 
 Bluesky doesn't make this super clear, but all you need for a custom feed are two json files:
