@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync, rmSync, existsSync } from "fs";
-import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
+import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs.js";
 import { config } from "./config.ts";
 import { getAtpAgent } from "./atp.ts";
 
