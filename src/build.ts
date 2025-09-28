@@ -92,4 +92,26 @@ mkdirSync(didFolder, { recursive: true });
 
 writeFileSync(`${didFolder}/did.json`, JSON.stringify(did));
 
+console.log("Creating HTML file...");
+
+const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+</head>
+<body>
+    ${sortedPosts
+      .slice(0, 30)
+      .map(
+        (post) =>
+          `<blockquote class="bluesky-embed" data-bluesky-uri="${post.uri}" data-bluesky-cid="${post.cid}" />`
+      )
+      .join("\n")}
+</body>
+</html>`;
+
+writeFileSync(`${outputFolder}/index.html`, htmlContent);
+
+console.log(`Saved HTML file to ${outputFolder}/index.html`);
+
 console.log("All done 🐼");
