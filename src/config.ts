@@ -70,7 +70,7 @@ export const config = createConfig({
       "app.bsky.embed.images#view",
       "app.bsky.embed.video#view",
       "app.bsky.embed.recordWithMedia#view",
-      // "app.bsky.embed.external#view",
+      "app.bsky.embed.external#view",
       // "app.bsky.embed.record#view",
     ];
 
