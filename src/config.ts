@@ -90,6 +90,7 @@ export const config = createConfig({
       "#sewing",
       "#DIY",
       "#MinisterOfDefense",
+      "#vinyl",
     ];
 
     const lowerText = text.toLowerCase();
