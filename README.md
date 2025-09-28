@@ -59,9 +59,7 @@ On that same docs page, they also say:
 
 > For most use cases, we recommend subscribing to the firehose at `com.atproto.sync.subscribeRepos`.
 
-And I disagree! The vast majority of feeds are incredibly simple, and shouldn't require a server that's always running and listening for new posts. Serving a static json that gets updated periodically should suffice, given the feed fits some criteria.
-
-Nowadays most feeds use services like Bluesky Feed Creator or Graze Social. These services are great, and almost definitely easier to set up than what I have here. But they might be overkill for your feed. Some of these services are also paid, and the free tier end up being more limited than what I have set up here.
+Nowadays most feeds use services like Bluesky Feed Creator or Graze Social. These services are great, and almost definitely easier to set up than what I have here. But they might be overkill for your feed, especially if it's ok to have a pretty limitted number of posts in it. Some of these services are also paid, and the free tier end up being more limited than what I have set up here.
 
 ## Criteria for statically-hosted feeds
 
@@ -70,6 +68,7 @@ Nowadays most feeds use services like Bluesky Feed Creator or Graze Social. Thes
 - Posts from certain users are pinned, highlighted or blocked from the feed.
 - Posts are sorted based on date, text content, author, etc.
 - New posts don't need to show up on the feed _immediately_ (5-10 minutes delay is ok).
+- The feed doesn't get that many posts. Currently it seems like Bluesky only gets 25 pots at a time, so for a static feed like this it seems like it will never show more than 25.
 
 If your feed follows these restrictions, then it qualifies for static hosting.
 
