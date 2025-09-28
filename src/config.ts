@@ -29,7 +29,9 @@ type Config<TQueries extends readonly string[] = readonly string[]> = {
   /** The target number of posts we want per query defined in searchQueries.
    * This takes into account the posts that get filtered out by other criteria in this config.
    * Queries are requested from the API, filtered, and paginated (one request per page),
-   * until we reach this number, or we run out of posts. */
+   * until we reach this number, or we run out of posts.
+   * Note that at least for Bluesky they seem to only request ~25 posts,
+   * so getting mor ethan this seems pointless for now. */
   postsPerQuery: number;
 
   /** Filter posts after querying (return true to keep, false to discard).
@@ -57,7 +59,7 @@ export const config = createConfig({
 
   searchQueries: ["#modding", "#gamemodding", "lang:en #mod"],
 
-  postsPerQuery: 500,
+  postsPerQuery: 25,
 
   filterPosts: (post: PostView, _query) => {
     if (!post.embed) {
@@ -96,7 +98,9 @@ export const config = createConfig({
     const lowerText = text.toLowerCase();
     if (
       deniedKeywords.some((deniedText) =>
-        new RegExp(`\\b${deniedText.toLowerCase()}\\b`, "i").test(lowerText)
+        new RegExp(`(^|\\s)${deniedText.toLowerCase()}($|\\s)`, "i").test(
+          lowerText
+        )
       )
     ) {
       return false;
