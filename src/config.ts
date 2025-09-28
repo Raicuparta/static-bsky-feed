@@ -89,6 +89,7 @@ export const config = createConfig({
       "modchip",
       "#sewing",
       "#DIY",
+      "#MinisterOfDefense",
     ];
 
     const lowerText = text.toLowerCase();
