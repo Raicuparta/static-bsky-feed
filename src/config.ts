@@ -55,7 +55,7 @@ export const config = createConfig({
 
   avatarPath: "assets/avatar.png",
 
-  searchQueries: ["#modding", "#gamemodding"],
+  searchQueries: ["#modding", "#gamemodding", "lang:en #mod"],
 
   postsPerQuery: 500,
 
@@ -81,7 +81,15 @@ export const config = createConfig({
       return false;
     }
 
-    const deniedKeywords = ["#ai", "#aiart", "UGC", "#electronics", "modchip"];
+    const deniedKeywords = [
+      "#ai",
+      "#aiart",
+      "UGC",
+      "#electronics",
+      "modchip",
+      "#sewing",
+      "#DIY",
+    ];
 
     const lowerText = text.toLowerCase();
     if (
