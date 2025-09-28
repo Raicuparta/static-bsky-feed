@@ -3,8 +3,8 @@ name: Publish Feed
 on:
   workflow_dispatch:
     inputs:
-      confirm:
-        description: 'Type "publish" to confirm publishing the feed'
+      recordName:
+        description: "ID of the feed, visible in the URL. Unique within your account. Using an existing ID will overwrite the existing feed on the same account."
         required: true
         type: string
 
@@ -14,7 +14,6 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.event.inputs.confirm == 'publish'
 
     steps:
       - name: Checkout
@@ -30,7 +29,7 @@ jobs:
         run: npm ci
 
       - name: Publish feed
-        run: npm run publish
+        run: npm run publish ${{ github.event.inputs.recordName }}
         env:
           BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}

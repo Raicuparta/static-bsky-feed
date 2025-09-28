@@ -3,8 +3,10 @@ import fs from "fs/promises";
 import { config } from "./config.ts";
 import { ids } from "@atproto/api/dist/client/lexicons.js";
 import { getAtpAgent } from "./atp.ts";
+import { getRecordNameArg } from "./record-name-arg.ts";
 
 const run = async () => {
+  const recordName = getRecordNameArg("publish");
   const agent = await getAtpAgent();
 
   let avatarRef: BlobRef | undefined;
@@ -30,7 +32,7 @@ const run = async () => {
   await agent.com.atproto.repo.putRecord({
     repo: agent.session?.did ?? "",
     collection: ids.AppBskyFeedGenerator,
-    rkey: config.recordName,
+    rkey: recordName,
     record: {
       did: `did:web:${config.hostName}`,
       displayName: config.displayName,

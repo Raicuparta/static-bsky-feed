@@ -2,6 +2,20 @@
 
 A Bluesky feed that's hosted statically and updated periodically.
 
+## Choices for a domain
+
+Due to the way Bluesky and the AT Protocol work, you need a domain or subdomain for this to work, and you need access to the root path of that domain/subdomain. Domain verification is done by reading a file at `domain.tld/.well-known/did.json`.
+
+By default, GitHub pages get deployed to `GH_USER.github.io/REPO_NAME`. If you simply add `.well-known/did.json` to any Pages repo, that would lead to `GH_USER.github.io/REPO_NAME/.well-known/did.json`, which won't work.
+
+If you can't use a custom domain, you have some options:
+
+1. Call your fork of this repo `.well-known` (exactly this, including the period). This means your repo would live in `github.com/GH_USER/.well-known`, and by adding `did.json` to the root of the page, you'd get `GH_USER.github.io/.well-known/did.json`, thus verifying the `GH_USER.github.io` subdomain for you. That subdomain would also be what you set for the `hostname` setting in `config.ts`.
+2. Create a separate repo called exactly `.well-known`, this time having only a `did.json` file and nothing else. This makes a bit more sense, the repo that creates and updates the feed just does the one thing, and the `.well-known` repo serves only to validate the subdomain. You'd need to make sure value for `service.serviceEndpoint` needs to point to the page of the feed repo, not the well-known repo. Basically, constructing a URL like `SERVICE_ENDPOINT/xrpc/app.bsky.feed.getFeedSkeleton` needs to point to the generated feed json. So it would look something like `"serviceEndpoint": "https://raicuparta.github.io/static-bsky-feed"`.
+3. Don't use GitHub pages. [Cloudflare Pages](https://pages.cloudflare.com/) is also free, and can easily support this. I think the only thing you'd need to change in this repo would be the [build workflow](.github/workflows/build.yml), to make it deploy to Cloudflare Pages instead of GitHub Pages. You could also ditch the build workflow completely, and just configure automated builds on the Cloudflare side.
+
+If you already own a domain, you can just create a subdomain and configure your fork of this repo to use that. That's what I did, using `bsky.raicuparta.com`. Everything should work as-is for this case.
+
 ## Making your own feed
 
 You should be able to set everything up directly on the GitHub website, but if you want you can also clone the repo locally, make changes, run tests, etc.
@@ -20,15 +34,15 @@ You should be able to set everything up directly on the GitHub website, but if y
 1. Go to your repo's Actions tab.
 2. Select the "Publish Feed" workflow.
 3. Click the "Run workflow" dropdown.
-4. Type the confirmation, and press the "Run workflow" button.
+4. Type the feed ID in the recordName input. For instance, for my feed ` bsky.app/profile/raicuparta.com/feed/modding`, the ID would be `modding`. If you use the same ID again, your changes to feed name, description, avatar will overwrite the existing ones.
 
-You can also do this on your local environment by running `npm run publish`.
+You can also do this on your local environment by running `npm run publish [RECORD_NAME]`.
 
 ## Removing your feed from the public
 
 Same as publishing, but use the "Unpublish Feed" workflow instead.
 
-You can also do this on your local environment by running `npm run unpublish`.
+You can also do this on your local environment by running `npm run unpublish [RECORD_NAME]`.
 
 ## Why?
 
@@ -88,3 +102,9 @@ Bluesky will read the `serviceEndpoint` value, in this case `https://bsky.raicup
 If you were to use the [official Bluesky custom feed template](https://github.com/bluesky-social/feed-generator), this endpoint would be dynamic. It receives some parameters, reads posts from a database, and serves potentially different results per request. We don't care about any of that, so we can just ignore all those parameters and serve this as a static file.
 
 The endpoint `xrpc/app.bsky.feed.getFeedSkeleton` doesn't end in `.json`, which can be annoying on some hosts that try to automatically detect content type based on file extension. That's why for this repo I'm actually hosting this file in `xrpc/app.bsky.feed.getFeedSkeleton/index.json`, which works just as well.
+
+## Local development
+
+Use [node](https://nodejs.org) and npm. Check `package.json` for engine version and available scripts, should be pretty simple.
+
+Check `.env.template` for setting up secrets for local testing.

@@ -5,10 +5,6 @@ type Config<TQueries extends readonly string[] = readonly string[]> = {
    * because did.json must be at the root of a domain/subdomain. */
   hostName: string;
 
-  /** ID of the feed, visible in the URL. Unique within your account.
-   * Using an existing ID will overwrite the existing feed on the same account. */
-  recordName: string;
-
   /** Name of the feed, visible to the public. */
   displayName: string;
 
@@ -52,8 +48,6 @@ function createConfig<const TQueries extends readonly string[]>(
 
 export const config = createConfig({
   hostName: "bsky.raicuparta.com",
-
-  recordName: "modding",
 
   displayName: "Game Modding",
 

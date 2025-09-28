@@ -1,8 +1,9 @@
-import { config } from "./config.ts";
 import { ids } from "@atproto/api/dist/client/lexicons.js";
 import { getAtpAgent } from "./atp.ts";
+import { getRecordNameArg } from "./record-name-arg.ts";
 
 const run = async () => {
+  const recordName = getRecordNameArg("unpublish");
   const agent = await getAtpAgent();
 
   const repo = agent.session?.did;
@@ -14,7 +15,7 @@ const run = async () => {
   await agent.com.atproto.repo.deleteRecord({
     repo,
     collection: ids.AppBskyFeedGenerator,
-    rkey: config.recordName,
+    rkey: recordName,
   });
 
   console.log("All done 🐌");

@@ -2,6 +2,9 @@
   "name": "static-bsky-feed",
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
     "build": "node --env-file-if-exists=.env src/build.ts",
     "publish": "node --env-file-if-exists=.env src/publish.ts",
