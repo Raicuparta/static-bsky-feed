@@ -29,16 +29,14 @@ type Config<TQueries extends readonly string[] = readonly string[]> = {
   /** The target number of posts we want per query defined in searchQueries.
    * This takes into account the posts that get filtered out by other criteria in this config.
    * Queries are requested from the API, filtered, and paginated (one request per page),
-   * until we reach this number, or we run out of posts.
-   * Note that at least for Bluesky they seem to only request ~25 posts,
-   * so getting mor ethan this seems pointless for now. */
+   * until we reach this number, or we run out of posts. */
   postsPerQuery: number;
 
   /** Filter posts after querying (return true to keep, false to discard).
    * This happens after posts have been fetched from the API using searchQueries.
    * You can use whatever criteria you want here. Check the type definitions for PostView for data you can use.
    * The query string passed here is one of the query strings you defined in searchQueries above,
-   * so you can change your filters based on the current query.*/
+   * so you can change your filters based on the current query. */
   filterPosts: (post: PostView, query: TQueries[number]) => boolean;
 };
 
@@ -93,6 +91,9 @@ export const config = createConfig({
       "#DIY",
       "#MinisterOfDefense",
       "#vinyl",
+      "#fashion",
+      "#model",
+      "#modeling",
     ];
 
     const lowerText = text.toLowerCase();
@@ -108,6 +109,12 @@ export const config = createConfig({
 
     const tagCount = (text.match(/#/g) || []).length;
     if (tagCount > 6) {
+      // Somewhat arbitrary cuttoff to avoid tag spam.
+      return false;
+    }
+
+    if (text.includes("#MoD") || text.includes("#MOD")) {
+      // Spelling the tag like this usually means it's an acronym.
       return false;
     }
 
