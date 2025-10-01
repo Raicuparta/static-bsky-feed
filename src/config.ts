@@ -51,7 +51,9 @@ export const config = createConfig({
 
   displayName: "Game Modding",
 
-  description: "Posts related to modding games.",
+  description: `Posts related to modding games.
+
+The code for this feed is open source: https://github.com/Raicuparta/static-bsky-feed`,
 
   avatarPath: "assets/avatar.png",
 
