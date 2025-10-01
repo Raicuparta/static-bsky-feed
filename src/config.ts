@@ -57,7 +57,7 @@ export const config = createConfig({
 
   searchQueries: ["#modding", "#gamemodding", "lang:en #mod"],
 
-  postsPerQuery: 25,
+  postsPerQuery: 100,
 
   filterPosts: (post: PostView, _query) => {
     if (!post.embed) {
