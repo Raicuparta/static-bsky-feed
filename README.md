@@ -2,6 +2,10 @@
 
 A Bluesky feed that's hosted statically and updated periodically.
 
+## ⚠️ TODO
+
+Need to update this documentation to explain the CloudFlare worker used for pagination. Everything else should be good.
+
 ## Choices for a domain
 
 Due to the way Bluesky and the AT Protocol work, you need a domain or subdomain for this to work, and you need access to the root path of that domain/subdomain. Domain verification is done by reading a file at `domain.tld/.well-known/did.json`.
@@ -68,7 +72,6 @@ Nowadays most feeds use services like Bluesky Feed Creator or Graze Social. Thes
 - Posts from certain users are pinned, highlighted or blocked from the feed.
 - Posts are sorted based on date, text content, author, etc.
 - New posts don't need to show up on the feed _immediately_ (5-10 minutes delay is ok).
-- The feed doesn't get that many posts. Currently it seems like Bluesky only gets 25 pots at a time, so for a static feed like this it seems like it will never show more than 25.
 
 If your feed follows these restrictions, then it qualifies for static hosting.
 
