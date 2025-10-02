@@ -21,7 +21,7 @@ If you already own a domain, you can just create a subdomain and configure your 
 You should be able to set everything up directly on the GitHub website, but if you want you can also clone the repo locally, make changes, run tests, etc.
 
 1. Fork this repo.
-2. Edit [src/config.ts](src/config.ts) (the comments there should explain what each thing means).
+2. Edit [config.ts](config.ts) (the comments there should explain what each thing means).
 3. Go to repo Settings -> Secrets and variables -> Actions.
 4. Create repository secrets:
    1. `BLUESKY_IDENTIFIER` - your Bluesky handle (without the `@`).
@@ -82,15 +82,15 @@ This one needs to be at the top level of the domain/subdomain. Bluesky looks at 
 
 ```json
 {
-  "@context": ["https://www.w3.org/ns/did/v1"],
-  "id": "did:web:bsky.raicuparta.com",
-  "service": [
-    {
-      "id": "#bsky_fg",
-      "type": "BskyFeedGenerator",
-      "serviceEndpoint": "https://bsky.raicuparta.com"
-    }
-  ]
+	"@context": ["https://www.w3.org/ns/did/v1"],
+	"id": "did:web:bsky.raicuparta.com",
+	"service": [
+		{
+			"id": "#bsky_fg",
+			"type": "BskyFeedGenerator",
+			"serviceEndpoint": "https://bsky.raicuparta.com"
+		}
+	]
 }
 ```
 

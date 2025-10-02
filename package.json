@@ -1,18 +1,22 @@
 {
-  "name": "static-bsky-feed",
-  "version": "1.0.0",
-  "type": "module",
-  "engines": {
-    "node": ">=24.0.0"
-  },
-  "scripts": {
-    "build": "node --env-file-if-exists=.env src/build.ts",
-    "publish": "node --env-file-if-exists=.env src/publish.ts",
-    "unpublish": "node --env-file-if-exists=.env src/unpublish.ts"
-  },
-  "devDependencies": {
-    "@atproto/api": "0.16.11",
-    "@types/node": "24.5.2",
-    "typescript": "5.9.2"
-  }
+	"name": "static-bsky-feed",
+	"version": "1.0.0",
+	"type": "module",
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"scripts": {
+		"build": "node --env-file-if-exists=.env scripts/build.ts",
+		"publish": "node --env-file-if-exists=.env scripts/publish.ts",
+		"unpublish": "node --env-file-if-exists=.env scripts/unpublish.ts",
+		"worker:deploy": "wrangler deploy",
+		"worker:dev": "wrangler dev",
+		"worker:types": "wrangler types"
+	},
+	"devDependencies": {
+		"@atproto/api": "0.17.0",
+		"@types/node": "24.6.2",
+		"typescript": "5.9.3",
+		"wrangler": "4.41.0"
+	}
 }

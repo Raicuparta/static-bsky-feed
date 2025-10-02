@@ -1,0 +1,16 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"esModuleInterop": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+		"types": ["node"],
+		"allowImportingTsExtensions": true
+	},
+	"ts-node": {
+		"esm": true
+	}
+}
