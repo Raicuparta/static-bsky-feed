@@ -1,0 +1,12 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"target": "es2021",
+		"lib": ["es2021"],
+		"jsx": "react-jsx",
+		"module": "es2022",
+		"moduleResolution": "node",
+		"checkJs": false,
+		"types": ["../worker-configuration.d.ts"]
+	}
+}
