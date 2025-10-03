@@ -6,6 +6,7 @@ type Config<TQueries extends readonly string[] = readonly string[]> = {
 	staticHostName: string;
 
 	/** Optional custom service endpoint for the feed. Use a full URL with https:// or http://.
+	 *  Leave this undefined to use staticHostName for everything (meaning you won't get pagination).
 	 * This url + "/xrpc/app.bsky.feed.getFeedSkeleton" is where the feed will be served from.
 	 * So if serviceEndpoint = "https://workername.workers.dev" then the feed will be at "https://workername.workers.dev/xrpc/app.bsky.feed.getFeedSkeleton".
 	 * If you're using a Cloudflare worker for pagination, this would be the worker's domain/subdomain. */

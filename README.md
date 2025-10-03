@@ -1,10 +1,6 @@
 # Static Bluesky Feed
 
-A Bluesky feed that's hosted statically and updated periodically.
-
-## ⚠️ TODO
-
-Need to update this documentation to explain the CloudFlare worker used for pagination. Everything else should be good.
+A Bluesky feed that's hosted statically (kinda) and updated periodically.
 
 ## Choices for a domain
 
@@ -32,6 +28,12 @@ You should be able to set everything up directly on the GitHub website, but if y
    2. `BLUESKY_PASSWORD` - a Bluesky [app password](https://bsky.app/settings/app-passwords).
 5. If you need local development, check [.env.template](.env.template) and use the same secrets.
 6. Go to your repo's Actions tab and enable the workflows. The "Build and Deploy" workflow will make the feed update itself periodically.
+
+## Pagination worker
+
+Optionally, you can use the Cloudflare Worker in this repo. This worker is configured in [wrangler.jsonc](wrangler.jsonc) and defined in [worker/index.ts](worker/index.ts). This worker uses the json feed files served by the static host, and paginates them. Without this, at the time of writing, BlueSky's official client will only be able to display the 25 most recent posts from your feed. That might be enough for some slower feeds.
+
+To enable this pagination worker, deploy this whole repo as a Cloudflare Worker, and change the `serviceEndpoint` setting in [config.ts](config.ts) to point to your worker's domain/subdomain. If you don't want to use this, simply leave that setting undefined.
 
 ## Publishing your feed
 
