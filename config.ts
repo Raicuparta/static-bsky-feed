@@ -60,7 +60,7 @@ export const config = createConfig({
 
 	displayName: 'Game Modding',
 
-	description: `Posts related to modding games.
+	description: `Posts related to modding games. Use #gamemodding to be included in the feed. @raicuparta.com will also pin some posts he likes.
 
 The code for this feed is open source: https://github.com/Raicuparta/static-bsky-feed`,
 
