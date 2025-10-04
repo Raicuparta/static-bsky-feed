@@ -50,7 +50,18 @@ await Promise.all(
 
 console.log(`Found ${posts.size} total posts`);
 
-const sortedPosts = [...posts.values()].sort((postA, postB) => new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime());
+const pinnedPost = await config.getPinnedPost?.();
+if (pinnedPost) {
+	posts.delete(pinnedPost);
+}
+
+const sortedPosts = [...posts.values()]
+	.sort((postA, postB) => new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime())
+	.map((post) => ({ post: post.uri }));
+
+if (pinnedPost) {
+	sortedPosts.unshift({ post: pinnedPost });
+}
 
 const outputFolder = 'output';
 
@@ -64,7 +75,7 @@ mkdirSync(feedSkeletonFolder, { recursive: true });
 writeFileSync(
 	`${feedSkeletonFolder}/index.json`,
 	JSON.stringify({
-		feed: sortedPosts.map((post) => ({ post: post.uri })),
+		feed: sortedPosts,
 	})
 );
 
@@ -95,19 +106,32 @@ const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+		<style>
+			main {
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+			}
+			.post > iframe {
+				border: none;
+				height: 500px;
+				width: 500px
+			}
+		</style>
 </head>
 <body>
-	<main>
+	<header>
 		<h1>${config.displayName}</h1>
-		<p>Made using <a href="https://github.com/Raicuparta/static-bsky-feed/">static-bsky-feed</a></p>
-		<hr />
+	</header>
+	<main>
+		<div>Made using <a href="https://github.com/Raicuparta/static-bsky-feed/">static-bsky-feed</a></div>
     ${sortedPosts
 			.slice(0, 30)
 			.map(
-				(post) =>
-					`<iframe loading="lazy" src="https://embed.bsky.app/embed/${post.uri.slice(
+				({ post }) =>
+					`<div className="post"><div>${post}</div><iframe loading="lazy" src="https://embed.bsky.app/embed/${post.slice(
 						'at://'.length
-					)}" frameborder="0" scrolling="no" style="border: none; height: 500px; width: 500px"></iframe>`
+					)}" frameborder="0" scrolling="no" style="border: none; height: 500px; width: 500px"></iframe></div>`
 			)
 			.join('\n')}
 		</main>

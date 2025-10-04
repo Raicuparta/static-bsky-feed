@@ -1,4 +1,4 @@
-import type { PostView } from '@atproto/api/dist/client/types/app/bsky/feed/defs.js';
+import { type PostView } from '@atproto/api/dist/client/types/app/bsky/feed/defs.js';
 
 type Config<TQueries extends readonly string[] = readonly string[]> = {
 	/** Domain or subdomain where static assets will be served from. Can't be a path within a domain/subdomain,
@@ -45,6 +45,8 @@ type Config<TQueries extends readonly string[] = readonly string[]> = {
 	 * The query string passed here is one of the query strings you defined in searchQueries above,
 	 * so you can change your filters based on the current query. */
 	filterPosts: (post: PostView, query: TQueries[number]) => boolean;
+
+	getPinnedPost?: () => Promise<string | null>;
 };
 
 function createConfig<const TQueries extends readonly string[]>(config: Config<TQueries>): Config<TQueries> {
@@ -127,5 +129,46 @@ The code for this feed is open source: https://github.com/Raicuparta/static-bsky
 		}
 
 		return true;
+	},
+
+	getPinnedPost: async () => {
+		try {
+			const { getAtpAgent } = await import('./scripts/atp.ts');
+
+			const agent = await getAtpAgent();
+
+			const userDid = agent.did;
+			if (!userDid) {
+				console.error('Could not determine user DID from authenticated agent.');
+				return null;
+			}
+
+			const response = await agent.app.bsky.feed.searchPosts({
+				author: userDid,
+				q: '📌',
+				since: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+				limit: 1,
+			});
+
+			const post = response.data.posts[0];
+			if (!post) {
+				console.log('No pinned post found.');
+				return null;
+			}
+
+			const reply = post.record['reply'] as Record<string, unknown> | undefined;
+			const root = reply?.['root'] as Record<string, unknown> | undefined;
+			const uri = root?.['uri'] as string | undefined;
+
+			if (!uri) {
+				console.error(`Failed to find URI of pinned post. Post data: ${JSON.stringify(post)}`);
+				return null;
+			}
+
+			return uri;
+		} catch (error) {
+			console.error('Error fetching pinned post:', error);
+			return null;
+		}
 	},
 });

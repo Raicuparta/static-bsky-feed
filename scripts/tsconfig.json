@@ -6,9 +6,7 @@
 		"moduleResolution": "NodeNext",
 		"esModuleInterop": true,
 		"verbatimModuleSyntax": true,
-		"noEmit": true,
-		"types": ["node"],
-		"allowImportingTsExtensions": true
+		"types": ["node"]
 	},
 	"ts-node": {
 		"esm": true

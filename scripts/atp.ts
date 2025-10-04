@@ -1,7 +1,13 @@
 import { AtpAgent } from '@atproto/api';
 import { config } from '../config.ts';
 
-export async function getAtpAgent() {
+let cachedAgent = null as AtpAgent | null;
+
+export async function getAtpAgent(): Promise<AtpAgent> {
+	if (cachedAgent) {
+		return cachedAgent;
+	}
+
 	const identifier = process.env.BLUESKY_IDENTIFIER;
 	const password = process.env.BLUESKY_PASSWORD;
 
@@ -24,5 +30,7 @@ export async function getAtpAgent() {
 
 	console.log(`Authenticated as ${authResponse.data.handle}`);
 
-	return agent;
+	cachedAgent = agent;
+
+	return cachedAgent;
 }
