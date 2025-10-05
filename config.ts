@@ -124,8 +124,9 @@ The code for this feed is open source: https://github.com/Raicuparta/static-bsky
 			return false;
 		}
 
-		// Bridgy posts seem bad. Will just skip.
-		if (post.author.handle.endsWith('brid.gy')) {
+		const deniedHandleHosts = ['brid.gy', 'awakari.com'];
+
+		if (deniedHandleHosts.some((host) => post.author.handle.endsWith(`.${host}`))) {
 			return false;
 		}
 
