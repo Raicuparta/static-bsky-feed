@@ -50,96 +50,100 @@ await Promise.all(
 
 console.log(`Found ${posts.size} total posts`);
 
-const pinnedPost = await config.getPinnedPost?.();
-if (pinnedPost) {
-	posts.delete(pinnedPost);
+if (posts.size === 0) {
+	// throw new Error('No posts found');
 }
 
-const sortedPosts = [...posts.values()]
-	.sort((postA, postB) => new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime())
-	.map((post) => ({ post: post.uri }));
+// const pinnedPost = await config.getPinnedPost?.();
+// if (pinnedPost) {
+// 	posts.delete(pinnedPost);
+// }
 
-if (pinnedPost) {
-	sortedPosts.unshift({ post: pinnedPost });
-}
+// const sortedPosts = [...posts.values()]
+// 	.sort((postA, postB) => new Date(postB.indexedAt).getTime() - new Date(postA.indexedAt).getTime())
+// 	.map((post) => ({ post: post.uri }));
 
-const outputFolder = 'output';
+// if (pinnedPost) {
+// 	sortedPosts.unshift({ post: pinnedPost });
+// }
 
-if (existsSync(outputFolder)) {
-	rmSync(outputFolder, { recursive: true });
-}
+// const outputFolder = 'output';
 
-const feedSkeletonFolder = `${outputFolder}/xrpc/app.bsky.feed.getFeedSkeleton`;
-mkdirSync(feedSkeletonFolder, { recursive: true });
+// if (existsSync(outputFolder)) {
+// 	rmSync(outputFolder, { recursive: true });
+// }
 
-writeFileSync(
-	`${feedSkeletonFolder}/index.json`,
-	JSON.stringify({
-		feed: sortedPosts,
-	})
-);
+// const feedSkeletonFolder = `${outputFolder}/xrpc/app.bsky.feed.getFeedSkeleton`;
+// mkdirSync(feedSkeletonFolder, { recursive: true });
 
-console.log(`Saved ${sortedPosts.length} posts to ${outputFolder}`);
+// writeFileSync(
+// 	`${feedSkeletonFolder}/index.json`,
+// 	JSON.stringify({
+// 		feed: sortedPosts,
+// 	})
+// );
 
-console.log('Creating did.json...');
+// console.log(`Saved ${sortedPosts.length} posts to ${outputFolder}`);
 
-const did = {
-	'@context': ['https://www.w3.org/ns/did/v1'],
-	id: `did:web:${config.staticHostName}`,
-	service: [
-		{
-			id: '#bsky_fg',
-			type: 'BskyFeedGenerator',
-			serviceEndpoint: config.serviceEndpoint ?? `https://${config.staticHostName}`,
-		},
-	],
-};
+// console.log('Creating did.json...');
 
-const didFolder = `${outputFolder}/.well-known`;
-mkdirSync(didFolder, { recursive: true });
+// const did = {
+// 	'@context': ['https://www.w3.org/ns/did/v1'],
+// 	id: `did:web:${config.staticHostName}`,
+// 	service: [
+// 		{
+// 			id: '#bsky_fg',
+// 			type: 'BskyFeedGenerator',
+// 			serviceEndpoint: config.serviceEndpoint ?? `https://${config.staticHostName}`,
+// 		},
+// 	],
+// };
 
-writeFileSync(`${didFolder}/did.json`, JSON.stringify(did));
+// const didFolder = `${outputFolder}/.well-known`;
+// mkdirSync(didFolder, { recursive: true });
 
-console.log('Creating HTML file...');
+// writeFileSync(`${didFolder}/did.json`, JSON.stringify(did));
 
-const htmlContent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
-		<style>
-			main {
-				display: flex;
-				flex-direction: column;
-				gap: 20px;
-			}
-			.post > iframe {
-				border: none;
-				height: 500px;
-				width: 500px
-			}
-		</style>
-</head>
-<body>
-	<header>
-		<h1>${config.displayName}</h1>
-	</header>
-	<main>
-		<div>Made using <a href="https://github.com/Raicuparta/static-bsky-feed/">static-bsky-feed</a></div>
-    ${sortedPosts
-			.slice(0, 30)
-			.map(
-				({ post }) =>
-					`<div className="post"><div>${post}</div><iframe loading="lazy" src="https://embed.bsky.app/embed/${post.slice(
-						'at://'.length
-					)}" frameborder="0" scrolling="no" style="border: none; height: 500px; width: 500px"></iframe></div>`
-			)
-			.join('\n')}
-		</main>
-</body>
-</html>`;
+// console.log('Creating HTML file...');
 
-writeFileSync(`${outputFolder}/index.html`, htmlContent);
+// const htmlContent = `<!DOCTYPE html>
+// <html lang="en">
+// <head>
+//     <script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+// 		<style>
+// 			main {
+// 				display: flex;
+// 				flex-direction: column;
+// 				gap: 20px;
+// 			}
+// 			.post > iframe {
+// 				border: none;
+// 				height: 500px;
+// 				width: 500px
+// 			}
+// 		</style>
+// </head>
+// <body>
+// 	<header>
+// 		<h1>${config.displayName}</h1>
+// 	</header>
+// 	<main>
+// 		<div>Made using <a href="https://github.com/Raicuparta/static-bsky-feed/">static-bsky-feed</a></div>
+//     ${sortedPosts
+// 			.slice(0, 30)
+// 			.map(
+// 				({ post }) =>
+// 					`<div className="post"><div>${post}</div><iframe loading="lazy" src="https://embed.bsky.app/embed/${post.slice(
+// 						'at://'.length
+// 					)}" frameborder="0" scrolling="no" style="border: none; height: 500px; width: 500px"></iframe></div>`
+// 			)
+// 			.join('\n')}
+// 		</main>
+// </body>
+// </html>`;
 
-console.log(`Saved HTML file to ${outputFolder}/index.html`);
+// writeFileSync(`${outputFolder}/index.html`, htmlContent);
 
-console.log('All done 🐼');
+// console.log(`Saved HTML file to ${outputFolder}/index.html`);
+
+// console.log('All done 🐼');

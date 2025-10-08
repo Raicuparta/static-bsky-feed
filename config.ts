@@ -106,7 +106,7 @@ The code for this feed is open source: https://github.com/Raicuparta/static-bsky
 			'#model',
 			'#modeling',
 			'#airsoft',
-   'vinyl',
+   		'vinyl',
 		];
 
 		const lowerText = text.toLowerCase();
